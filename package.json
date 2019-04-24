@@ -1,0 +1,43 @@
+{
+  "name": "piano-roll",
+  "version": "0.0.1",
+  "description": "A live in-browser piano roll with synthesisers to get musical ideas down quickly",
+  "main": "index.html",
+  "dependencies": {
+    "vue": "^2.5.21",
+    "vuex": "^3.1.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.24.5",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.12.1",
+    "eslint-config-google": "^0.11.0",
+    "laravel-mix": "^4.0.6",
+    "resolve-url-loader": "2.3.1",
+    "sass": "^1.15.2",
+    "sass-loader": "7.*",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjpdee/piano-roll.git"
+  },
+  "author": "cjpdee",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/cjpdee/piano-roll/issues"
+  },
+  "homepage": "https://github.com/cjpdee/piano-roll#readme"
+}
