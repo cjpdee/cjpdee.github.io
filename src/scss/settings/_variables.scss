@@ -1,0 +1,44 @@
+// fonts
+@font-face {
+    font-family: "Drop Dead Gorgeous";
+    src: url("../../../assets/fonts/DropDeadGorgeous.woff2") format("woff2"),
+        url("../../../assets/fonts/DropDeadGorgeous.woff") format("woff");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "bebas neue";
+    src: url("../../../assets/fonts/bebasneue.woff2") format("woff2"),
+        url("../../../assets/fonts/bebasneue.woff") format("woff");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+$ffHeadings: "Drop Dead Gorgeous", cursive;
+$ffMain: sans-serif;
+
+$fzBase: 18;
+$lhBase: 35;
+
+$fzHeadings: 18;
+$lhHeadings: 35;
+
+// color
+$colorPrimary: #ff8621;
+$colorContrast: #252422;
+
+// space
+$sp-xs: 6;
+$sp-s: 9;
+$sp-m: 14;
+$sp-l: 22;
+$sp-xl: 35;
+$sp-xxl: 57;
+
+$z-s: 14;
+$z-m: 18;
+$z-l: 23;
+$z-xl: 29;
+$z-xxl: 37;

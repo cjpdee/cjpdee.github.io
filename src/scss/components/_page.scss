@@ -1,0 +1,101 @@
+body {
+    font-family: $ffMain;
+    color: $colorContrast;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: $ffHeadings;
+    margin: 0;
+    margin-bottom: 0.75em;
+}
+
+$module: "page";
+
+.#{$module} {
+    background-color: $colorPrimary;
+    min-height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+
+    &__nav {
+        counter-reset: items;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        flex: 1 0 100%;
+        background-color: $colorContrast;
+        padding: em($sp-xxl);
+
+        overflow-y: auto;
+
+        .#{$module}.is-open & {
+            flex: 0 0 30%;
+        }
+    }
+
+    &__nav-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        position: relative;
+        width: em(360);
+        height: em(360);
+        margin-bottom: em($sp-xxl);
+
+        background-color: $colorPrimary;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        border: 6px solid transparent;
+
+        &:before {
+            position: absolute;
+            left: em($sp-s, ($z-xxl * 6));
+            bottom: 0;
+            line-height: 0.6;
+            counter-increment: items;
+            content: "0" counter(items) ".";
+            font-family: "bebas neue";
+            font-size: em($z-xxl * 6);
+            color: $colorContrast;
+        }
+
+        &:hover {
+            background-color: transparent;
+            border: 6px solid $colorPrimary;
+            &:before {
+                color: $colorPrimary;
+            }
+        }
+    }
+
+    &__nav-item-text {
+        position: relative;
+        top: em($sp-m);
+        font-family: $ffHeadings;
+        font-size: em($z-xxl);
+        color: white;
+    }
+
+    &__aside {
+        flex: 0 1 0;
+        padding: em($sp-xxl);
+        padding-top: em($sp-xxl + $sp-xxl);
+
+        .#{$module}.is-open & {
+            flex: 1 0 70%;
+        }
+    }
+}

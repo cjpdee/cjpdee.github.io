@@ -1,34 +1,38 @@
-<!doctype html>
-<html>
-
-<head>
-    <link rel="stylesheet" href="app.css" />
-    <script src="https://kit.fontawesome.com/42cf141eda.js"></script>
-    <title>Piano Roll</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 
-
-            app notes
-
-            include the main shell of the app in a style tag once it's finished
-            preload the css files alongside this and use it when the user
-            starts to interact with the page
-            this should reduce rendering time a bit
-
-            keep shallow dom tree to mitigate impact of reflows
-
-            use absolute positioning in the piano roll to prevent reflows
-
-
-            use 1-8 keys to choose note lengths
-
-            -->
-</head>
-
-<body>
-    <div id="app"></div>
-
-    <script src="app.js"></script>
-</body>
-
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Charlie D</title>
+        <link rel="stylesheet" href="index.css" />
+    </head>
+    <body>
+        <header class="header">
+            <h1 class="header__text">
+                Projects by Charlie (WIP)
+            </h1>
+        </header>
+        <main class="page">
+            <nav class="page__nav">
+                <button class="page__nav-item" data-link>
+                    <span class="page__nav-item-text">Example Project</span>
+                </button>
+            </nav>
+            <div class="page__aside">
+                <section class="content" data->
+                    <h2 class="content__heading">Example Project</h2>
+                    <p>
+                        Greetings. If you've come across this website... I'm
+                        surprised. This is a WIP site for my portfolio. It'll be
+                        done soon-ish. Until then you can watch it being built
+                        in its various states, if you really want to.
+                    </p>
+                    <div class="content__links">
+                        <a href="/" class="content__link">Live Demo</a>
+                        <a href="/" class="content__link">Git Repo</a>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
 </html>
