@@ -1,0 +1,111 @@
+$module: "nav";
+
+.#{$module} {
+    counter-reset: items;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    max-height: 100vh;
+    width: 100%;
+    margin-right: em(-$sp-xxl);
+
+    &__item {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        flex: 1 1 em(100);
+        min-width: em(100);
+        max-width: em(360);
+        // max-height: em(360);
+        width: 100%;
+        margin-bottom: em($sp-xxl);
+        margin-right: em($sp-xxl);
+
+        background-color: $colorPrimary;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        border: 6px solid transparent;
+        text-decoration: none;
+
+        @media (max-height: 600px) {
+            max-width: em(280);
+        }
+
+        &:nth-of-type(3) {
+            flex: 1 1 em((360 * 2) + $sp-xxl);
+        }
+
+        &:hover {
+            background-color: transparent;
+            border: 6px solid $colorPrimary;
+            // text-decoration: underline $colorPrimary;
+            & .#{$module}__item-number:before {
+                color: $colorPrimary;
+            }
+        }
+    }
+
+    &__item-number {
+        position: relative;
+        top: 6px;
+        left: 0;
+        bottom: em(-6);
+        height: 100%;
+        padding-right: 100%;
+
+        overflow: hidden;
+        &:before {
+            position: absolute;
+            right: 9px;
+            bottom: em(-12, ($z-xxl * 6));
+            line-height: 0.8;
+            counter-increment: items;
+            content: "0" counter(items);
+            font-family: "bebas neue";
+            font-size: em($z-xxl * 6);
+            color: $colorContrast;
+
+            @media (max-height: 600px) {
+                font-size: em($z-xxl * 4);
+                bottom: em(-12, ($z-xxl * 4));
+            }
+        }
+    }
+
+    &__item-text {
+        position: absolute;
+        bottom: em(-$sp-m);
+        left: 0;
+        font-family: $ffHeadings;
+        font-size: em($z-xxl);
+        color: white;
+
+        @media (max-height: 600px) {
+            font-size: em($z-xl);
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            bottom: em(-6);
+            display: block;
+            height: em(5);
+            width: 100%;
+            background-color: $colorPrimary;
+            transform-origin: left;
+            transition: transform 0.2s;
+            transform: scaleX(0);
+        }
+
+        .#{$module}__item:hover &:before {
+            transform: scaleX(1);
+        }
+    }
+}

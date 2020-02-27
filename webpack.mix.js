@@ -1,6 +1,6 @@
 const mix = require("laravel-mix");
 
-mix.ts("./src/js/index.ts", "./index.js").sass(
+mix.js("./src/js/index.js", "./index.js").sass(
     "./src/scss/index.scss",
     "./index.css"
 );
