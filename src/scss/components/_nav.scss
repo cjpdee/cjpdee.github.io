@@ -3,29 +3,54 @@ $module: "nav";
 .#{$module} {
     counter-reset: items;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     max-height: 100vh;
+
+    height: 100%;
     width: 100%;
-    margin-right: em(-$sp-xxl);
+    margin-right: em((-$sp-xxl + -$sp-xl));
+    padding: em($sp-xxl);
+    padding-bottom: em($sp-l);
+    padding-top: em(($sp-xxl + $sp-xl) + $sp-xl);
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        overflow-y: scroll;
+        justify-content: flex-start;
+        padding: em($sp-l);
+        max-height: auto;
+    }
+
+    &__column {
+        flex: 0 1 480px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin-right: em($sp-xxl+$sp-xl);
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+        @media (max-width: 600px) {
+            flex: 1 0 auto;
+            width: 100%;
+            margin-bottom: em($sp-xxl +$sp-xl);
+        }
+    }
 
     &__item {
         position: relative;
         z-index: 3;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: center;
-        flex: 1 1 em(100);
-        min-width: em(100);
-        max-width: em(360);
-        // max-height: em(360);
-        width: 100%;
-        margin-bottom: em($sp-xxl);
-        margin-right: em($sp-xxl);
+        flex: 1;
+        max-width: em(480);
+        height: 100%;
+        width: auto;
+        margin-bottom: em($sp-xxl +$sp-xl);
+        
 
         background-color: $colorPrimary;
         border: none;
@@ -34,18 +59,15 @@ $module: "nav";
         border: 6px solid transparent;
         text-decoration: none;
 
-        @media (max-height: 600px) {
-            max-width: em(280);
-        }
-
-        &:nth-of-type(3) {
-            flex: 1 1 em((360 * 2) + $sp-xxl);
+        @media (max-width: 600px) {
+            flex: 0 0 em(300);
+            width: 100%;
+            margin-right: 0;
         }
 
         &:hover {
             background-color: transparent;
             border: 6px solid $colorPrimary;
-            // text-decoration: underline $colorPrimary;
             & .#{$module}__item-number:before {
                 color: $colorPrimary;
             }
@@ -72,7 +94,7 @@ $module: "nav";
             font-size: em($z-xxl * 6);
             color: $colorContrast;
 
-            @media (max-height: 600px) {
+            @media (max-height: 700px) {
                 font-size: em($z-xxl * 4);
                 bottom: em(-12, ($z-xxl * 4));
             }
@@ -84,10 +106,10 @@ $module: "nav";
         bottom: em(-$sp-m);
         left: 0;
         font-family: $ffHeadings;
-        font-size: em($z-xxl);
+        font-size: em($z-xxl+$z-m);
         color: white;
 
-        @media (max-height: 600px) {
+        @media (max-height: 700px) {
             font-size: em($z-xl);
         }
 
