@@ -25,12 +25,16 @@ $module: "nav";
         max-height: auto;
     }
 
+    @media (max-height: 600px) {
+        padding-top: em($sp-l);
+    }
+
     &__column {
         flex: 0 1 480px;
         display: flex;
         flex-direction: column;
         height: 100%;
-        margin-right: em($sp-xxl+$sp-xl);
+        margin-right: em($sp-xxl + $sp-xl);
 
         &:last-of-type {
             margin-right: 0;
@@ -38,7 +42,11 @@ $module: "nav";
         @media (max-width: 600px) {
             flex: 1 0 auto;
             width: 100%;
-            margin-bottom: em($sp-xxl +$sp-xl);
+            margin-bottom: em($sp-xxl + $sp-xl);
+        }
+
+        @media (max-height: 700px) {
+            margin-right: em($sp-xl);
         }
     }
 
@@ -49,8 +57,7 @@ $module: "nav";
         max-width: em(480);
         height: 100%;
         width: auto;
-        margin-bottom: em($sp-xxl +$sp-xl);
-        
+        margin-bottom: em($sp-xxl + $sp-xl);
 
         background-color: $colorPrimary;
         border: none;
@@ -63,6 +70,10 @@ $module: "nav";
             flex: 0 0 em(300);
             width: 100%;
             margin-right: 0;
+        }
+
+        @media (max-height: 700px) {
+            margin-bottom: em($sp-xl);
         }
 
         &:hover {
@@ -106,7 +117,7 @@ $module: "nav";
         bottom: em(-$sp-m);
         left: 0;
         font-family: $ffHeadings;
-        font-size: em($z-xxl+$z-m);
+        font-size: em($z-xxl + $z-s);
         color: white;
 
         @media (max-height: 700px) {

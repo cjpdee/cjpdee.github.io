@@ -7,11 +7,15 @@ $module: "header";
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 5;
+    z-index: 100;
     width: 100%;
     padding: em($sp-m);
     font-size: em($fzHeadings);
     color: white;
+
+    &__text {
+        font-size: em($z-xxl);
+    }
 
     .is-open & {
         color: $colorContrast;
