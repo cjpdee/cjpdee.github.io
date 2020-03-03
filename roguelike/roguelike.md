@@ -1,3 +1,0 @@
----
-permalink: /roguelike/index.html
----
