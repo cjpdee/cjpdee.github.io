@@ -24,7 +24,7 @@
         "browser-sync-webpack-plugin": "^2.0.1",
         "cross-env": "^7.0.0",
         "laravel-mix": "^5.0.1",
-        "node-sass": "^4.13.1",
+        "node-sass": "^7.0.0",
         "resolve-url-loader": "^3.1.0",
         "sass-loader": "^8.0.2",
         "ts-loader": "^6.2.1",
