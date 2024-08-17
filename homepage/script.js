@@ -32,7 +32,13 @@ const TEST_BOOKS = [
 ]
 const BOOKS_AVAILABLE = {
 	'tao-te-ching': 'Tao Te Ching 道德經',
-	'meditations': 'Meditations',
+	'meditations-book-1': 'Meditations: Book 1',
+	'meditations-book-2': 'Meditations: Book 2',
+	'meditations-book-3': 'Meditations: Book 3',
+	'meditations-book-4': 'Meditations: Book 4',
+	'meditations-book-5': 'Meditations: Book 5',
+	'meditations-book-6': 'Meditations: Book 6',
+	// 'meditations-book-7': 'Meditations: Book 7',
 	'art-of-war': 'Art of War'
 	/*
 	'Analects',
