@@ -1,0 +1,396 @@
+<!doctype HTML>
+<html lang="en">
+
+<head>
+	<title>Tao Te Ching</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+	--c-text: #fff;
+	--c-text-faded: #999999;
+	--c-bg: #000;
+	--c-bg-faded: #222;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: system-ui, sans-serif;
+	list-style: none;
+}
+
+body {
+	font-size: 16px;
+	background-color: var(--c-bg);
+	color: var(--c-text);
+}
+
+.page {
+	max-width: 640px;
+	width: 100%;
+	padding: 24px;
+	margin: 0 auto;
+}
+
+.page__header {
+	display: flex;
+	align-items: start;
+	justify-content: space-between;
+	width: 100%;
+	margin-bottom: 0.5rem;
+}
+
+.page__chapter-title {
+	text-align: left;
+	font-size: 2rem;
+	color: var(--c-text-faded);
+	margin-bottom: 8px;
+	font-weight: 200;
+}
+
+.page__book-title {
+	font-size: 1rem;
+	font-weight: 300;
+	color: var(--c-text-faded);
+}
+
+button#nav-toggle {
+	background: none;
+	border: none;
+	color: var(--c-text-faded);
+	font-size: 1rem;
+	cursor: pointer;
+
+}
+
+button#nav-toggle:after {
+	content: '▼';
+}
+
+button#nav-toggle:hover, button#nav-toggle.is-active {
+	color: var(--c-text);
+}
+
+.modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	align-items: center;
+	justify-content: center;
+	max-width: none;
+	width: 100vw;
+	height: 100vh;
+	padding: 24px;
+	background: rgba(0, 0, 0, 0.5);
+	pointer-events: none;
+}
+
+.modal[open] {
+	pointer-events: auto;
+	display: flex;
+}
+
+.modal__inner {
+	background: var(--c-bg);
+	padding: 24px;
+	width: 100%;
+	max-width: 480px;
+	border: 1px solid var(--c-bg-faded);
+	border-radius: 8px;
+	color: var(--c-text);
+}
+
+.modal__nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.modal__nav-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 40px;
+	width: 40px;
+	background: none;
+	border: none;
+	border-radius: 4px;
+	color: var(--c-text-faded);
+	font-size: 2rem;
+	padding: 8px;
+	padding-bottom: 16px;
+	line-height: 0;
+	cursor: pointer;
+}
+
+.modal__nav-button:hover {
+	color: var(--c-text);
+	background: var(--c-bg-faded);
+}
+
+& select {
+	padding: 8px 16px 8px 8px;
+	background: none;
+	border: none;
+	color: var(--c-text);
+	font-size: 1.5rem;
+	font-weight: 300;
+	border-radius: 4px;
+	cursor: pointer;
+}
+& select:hover {
+	background: var(--c-bg-faded);
+}
+
+.modal__header {
+	margin-bottom: 1rem;
+}
+
+hr {
+	border: 1px solid var(--c-bg-faded);
+	border-top: none;
+	margin: 1.25rem 0;
+}
+
+h4 {
+	font-size: 1.25rem;
+	font-weight: 300;
+	margin-bottom: 1rem;
+}
+
+label {
+	display: flex;
+	align-items: center;
+	justify-content: start;
+	gap: 8px;
+	width: 100%;
+	padding: 8px;
+	border-radius: 4px;
+	background: var(--c-bg);
+	color: var(--c-text-faded);
+	cursor: pointer;
+	margin-bottom: 4px;
+	line-height: 0;
+
+	&:active {
+		background: var(--c-bg-faded);
+		color: var(--c-text);
+	}
+	&:hover {
+		@media (min-width: 600px) {
+			background: var(--c-bg-faded);
+			color: var(--c-text);
+		
+		}
+	}
+
+	li:first-child & {
+		border-top-left-radius: 16px;
+		border-top-right-radius: 16px;
+	}
+
+	li:last-child & {
+		border-bottom-left-radius: 16px;
+		border-bottom-right-radius: 16px;
+	}
+}
+
+input[type="checkbox"] {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	appearance: none;
+	accent-color: var(--c-bg-faded);
+	background: var(--c-bg-faded);
+	border-radius: 2px;
+
+	&:checked {
+		appearance: revert;
+	}
+
+	li label:hover & {
+		@media (min-width: 600px) {
+			background: var(--c-bg);
+			accent-color: var(--c-bg);
+		}
+	}
+}
+
+.page__chapter-content {
+	width: 100%;
+	white-space: pre-wrap;
+	font-size: 1rem;
+	letter-spacing: 0.02em;
+	line-height: 1.75;
+	font-weight: 400;
+}
+
+@media (min-width: 600px) {
+	body {
+		justify-content: start;
+	}
+	p {
+		font-size: 1.25rem;
+		font-weight: 200;
+	}
+
+	p.is-long {
+
+	}
+}
+</style>
+</head>
+
+<body>
+	<main class="page">
+		<header class="page__header">
+			<h2 id="chapter-title" class="page__chapter-title"></h2>
+			<h1 class="page__book-title">
+				<button 
+					id="nav-toggle"
+					aria-haspopup="dialog"
+					aria-controls="nav-dialog"
+					aria-expanded="false"
+					onclick="document.querySelector('#nav-dialog').showModal()"
+				>
+					Tao Te Ching 道德經
+				</button>
+			</h1>
+		</header>
+		<p class="page__chapter-content" id="chapter-container"></p>
+	</main>
+	<dialog id="nav-dialog" class="modal" onclick="(() => {
+		if ((event.target.contains(document.querySelector('#nav-dialog')))) {
+			document.querySelector('#nav-dialog').close()
+		}
+	})()">
+		<div id="nav-inner" class="modal__inner">
+			<header class="modal__header">
+				<select style="width: calc(100% + 24px); margin-left: -12px;">
+					<option>Tao Te Ching 道德經</option>
+				</select>
+				<address rel="author" style="line-height: 1.5;">
+					Laozi 老子
+				</address>
+				<address rel="author">
+					Translated by Gia-Fu Feng 馮家福 and Jane English
+				</address>
+				</span>
+				<address rel="author"></cite>
+			</header>
+			<nav class="modal__nav">
+				<button 
+					class="modal__nav-button"
+					onclick="(() => { setChapter(currentChapter - 1) })()"
+					id="prev"
+				>&lt;</button>
+				<select
+					onchange="(() => {
+						// setChapter()
+					})()"
+				>
+					<option>Chapter 1</option>
+				</select>
+				<button 
+					class="modal__nav-button"
+					onclick="(() => { setChapter(currentChapter + 1) })()"
+					id="next"
+				>&gt;</button>
+			</nav>
+			<hr />
+			<h4>Reading list</h4>
+			<ul id="nav-list">
+				<li>
+					<label>
+						<input type="checkbox" value="tao-te-ching" />
+						Tao Te Ching 道德經
+					</label>
+				</li>
+				<li>
+					<label>
+						<input type="checkbox" value="tao-te-ching" />
+						Medidations
+					</label>
+				</li>
+			</ul>
+		</div>
+	</dialog>
+</body>
+
+<script async="true">
+const BOOKS_AVAILABLE = {
+	'tao-te-ching': 'Tao Te Ching 道德經',
+	/*
+	'Analects',
+	'On the Shortness of Life',
+	'Letters from a Stoic',
+	'The Prince',
+	'The Republic',
+	'Nicomachean Ethics',
+	'Confessions',
+	'Leviathan',
+	'Critique of Pure Reason',
+	'Groundwork of the Metaphysics of Morals',
+	'Phenomenology of Spirit',
+	'Being and Time',
+	*/
+}
+
+/**
+ * Settings in local storage
+ */
+const ReadingList = (() => ({
+	get: () => {
+		const localSettings = localStorage.getItem('reading-list')
+		try {
+			return localSettings ? JSON.parse(localSettings) : Object.keys(BOOKS_AVAILABLE)
+		} catch (error) {
+			return Object.keys(BOOKS_AVAILABLE)
+		}
+	},
+
+	/**
+	 * @param list {string[]}
+	 * List of books to be set in local storage
+	 */
+	set: (list) => {
+		localStorage.setItem('reading-list', JSON.stringify(list))
+	}
+}))()
+
+/**
+ * @param books {string[]}
+ * Books to be displayed in the reading list
+ */
+const fetchBooks = async (books) => {
+	const data = await Promise.all(books.map(async (book) => {
+		const response = await fetch(`./books/${book}.json`)
+		if (!response.ok) {
+			throw new Error(`Failed to fetch ${book}`)
+		}
+		const text = await response.text()
+		return text
+	}))
+	return data
+}
+
+(async () => {
+	const books = await fetchBooks(ReadingList.get())
+	console.log(books)
+})()
+
+//const todaysChapter = Math.floor(Math.random() * taoTeChing.length)
+
+//const $chapterTitle = document.getElementById('chapter-title')
+//$chapterTitle.textContent = `${todaysChapter + 1}`
+
+//const $chapterContent = document.getElementById('chapter-container')
+
+//$chapterContent.textContent = taoTeChing[todaysChapter]
+
+</script>
+
+</html>
