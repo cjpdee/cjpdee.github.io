@@ -150,13 +150,6 @@ p {
 	line-height: 1.75;
 	font-weight: 400;
 }
-
-@media (min-width: 600px) {
-	p {
-		font-size: 1.25rem;
-		font-weight: 300;
-	}
-}
 </style>
 </head>
 
@@ -1366,12 +1359,14 @@ updateChapter(currentChapter)
 * Event listeners
 */
 
+/*
 const handleOutsideClick = (e) => {
 	if (!$dropdown.closest('h1').contains(e.target)) {
 		$dropdown.classList.remove('is-active')
 		document.removeEventListener('click', handleOutsideClick)
 	}
 }
+*/
 
 /*
 $dropdown.addEventListener('click', (e) => {
