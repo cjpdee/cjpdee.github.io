@@ -372,7 +372,7 @@ const fetchBooks = async (books) => {
 			throw new Error(`Failed to fetch ${book}`)
 		}
 		const text = await response.text()
-		return text
+		return JSON.parse(text)
 	}))
 	return data
 }
