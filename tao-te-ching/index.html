@@ -151,11 +151,11 @@ p {
 	font-weight: 400;
 }
 
-p {
 @media (min-width: 600px) {
+	p {
 		font-size: 1.25rem;
 		font-weight: 300;
-}
+	}
 }
 </style>
 </head>
@@ -1347,14 +1347,14 @@ const updateChapter = (chapter) => {
 	<!-- $chapterSelect.value = chapter -->
 
 	if (chapter === taoTeChing.length - 1) {
-		$nextButton.disabled = true;
+		<!-- $nextButton.disabled = true; -->
 	} else {
-		$nextButton.disabled = false;
+		<!-- $nextButton.disabled = false; -->
 	}
 	if (chapter <= 0) {
-		$prevButton.disabled = true;
+		<!-- $prevButton.disabled = true; -->
 	} else {
-		$prevButton.disabled = false;
+		<!-- $prevButton.disabled = false; -->
 	}
 }
 
