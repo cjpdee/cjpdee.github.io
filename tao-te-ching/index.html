@@ -1320,15 +1320,15 @@ let currentChapter = Math.floor(Math.random() * taoTeChing.length)
 /**
 * Populate the dropdown with the chapter numbers
 */
-taoTeChing.forEach((chapter, index) => {
-	const $option = document.createElement('option')
-	$option.value = index
-	$option.textContent = 'Chapter ' + (index + 1)
-	if (index === currentChapter) {
-		$option.selected = true
-	}
-	$chapterSelect.appendChild($option)
-})
+<!-- taoTeChing.forEach((chapter, index) => { -->
+<!-- 	const $option = document.createElement('option') -->
+<!-- 	$option.value = index -->
+<!-- 	$option.textContent = 'Chapter ' + (index + 1) -->
+<!-- 	if (index === currentChapter) { -->
+<!-- 		$option.selected = true -->
+<!-- 	} -->
+<!-- 	$chapterSelect.appendChild($option) -->
+<!-- }) -->
 
 /**
 * @param chapter {number}
@@ -1371,10 +1371,10 @@ const handleOutsideClick = (e) => {
 	}
 }
 
-$dropdown.addEventListener('click', (e) => {
-	$dropdown.classList.toggle('is-active')
-	document.addEventListener('click', handleOutsideClick)
-})
+<!-- $dropdown.addEventListener('click', (e) => { -->
+<!-- 	$dropdown.classList.toggle('is-active') -->
+<!-- 	document.addEventListener('click', handleOutsideClick) -->
+<!-- }) -->
 
 $prevButton.addEventListener('click', () => {
 	updateChapter(currentChapter - 1)
@@ -1384,11 +1384,11 @@ $nextButton.addEventListener('click', () => {
 	updateChapter(currentChapter + 1)
 	currentChapter++;
 })
-$chapterSelect.addEventListener('change', (e) => {
-	updateChapter(parseInt(e.target.value))
-	currentChapter = parseInt(e.target.value)
-	$dropdown.classList.remove('is-active')
-})
+<!-- $chapterSelect.addEventListener('change', (e) => { -->
+<!-- 	updateChapter(parseInt(e.target.value)) -->
+<!-- 	currentChapter = parseInt(e.target.value) -->
+<!-- 	$dropdown.classList.remove('is-active') -->
+<!-- }) -->
 
 
 
