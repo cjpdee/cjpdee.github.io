@@ -77,7 +77,7 @@ const ReadingList = (() => ({
  * Books to be displayed in the reading list
  */
 const fetchBooks = async (books) => {
-	// return TEST_BOOKS.map((book) => JSON.parse(book));
+	return TEST_BOOKS.map((book) => JSON.parse(book)).filter((book) => ReadingList.get().includes(book.id));
 	const data = await Promise.all(books.map(async (book) => {
 		console.log('fetching', book)
 		const response = await fetch(`./books/${book}.json`)
@@ -172,6 +172,20 @@ const setChapter = (bookId, chapter) => {
 
 	const $translation = document.getElementById('translation')
 	$translation.textContent = `Translated by ${book.translated_by}`
+
+	const $readingList = document.getElementById('reading-list')
+	$readingList.innerHTML = Object.keys(BOOKS_AVAILABLE).map((bookId) => `
+		<li>
+			<label>
+				<input 
+					type="checkbox" 
+					${ReadingList.get().includes(bookId) ? 'checked' : ''} 
+					onchange="ReadingList.set(this.checked ? [...ReadingList.get(), '${bookId}'] : ReadingList.get().filter((b) => b !== '${bookId}'))"
+				/>
+				${BOOKS_AVAILABLE[bookId]}
+			</label>
+		</li>
+	`).join('')
 }
 
 let books;
