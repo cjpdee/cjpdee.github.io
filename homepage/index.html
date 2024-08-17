@@ -67,6 +67,7 @@ button#nav-toggle {
 
 button#nav-toggle:after {
 	content: '▼';
+	margin-left: 0.5rem;
 }
 
 button#nav-toggle:hover, button#nav-toggle.is-active {
@@ -168,6 +169,7 @@ label {
 	gap: 8px;
 	width: 100%;
 	padding: 8px;
+	padding-left: 0;
 	border-radius: 4px;
 	background: var(--c-bg);
 	color: var(--c-text-faded);
@@ -179,8 +181,9 @@ label {
 		background: var(--c-bg-faded);
 		color: var(--c-text);
 	}
-	&:hover {
-		@media (min-width: 600px) {
+	@media (min-width: 600px) {
+		padding-left: 8px;
+		&:hover {
 			background: var(--c-bg-faded);
 			color: var(--c-text);
 		
@@ -269,13 +272,20 @@ input[type="checkbox"] {
 	})()">
 		<div id="nav-inner" class="modal__inner">
 			<header class="modal__header">
-				<select style="width: calc(100% + 24px); margin-left: -12px;">
+				<select 
+					id="book-select"
+					onchange="(() => {
+						setBook(event.target.value)
+					console.log('here')
+					})()"
+					style="width: calc(100% + 24px); margin-left: -12px;"
+				>
 					<option>Tao Te Ching 道德經</option>
 				</select>
-				<address rel="author" style="line-height: 1.5;">
+				<address id="author" rel="author" style="line-height: 1.5;">
 					Laozi 老子
 				</address>
-				<address rel="author">
+				<address id="translation" rel="author">
 					Translated by Gia-Fu Feng 馮家福 and Jane English
 				</address>
 				</span>
@@ -284,19 +294,24 @@ input[type="checkbox"] {
 			<nav class="modal__nav">
 				<button 
 					class="modal__nav-button"
-					onclick="(() => { setChapter(currentChapter - 1) })()"
+					onclick="(() => { 
+						setChapter(currentBook.id, currentChapter - 1)
+					})()"
 					id="prev"
 				>&lt;</button>
 				<select
+					id="chapter-select"
 					onchange="(() => {
-						// setChapter()
+						setChapter(currentBook.id, event.target.selectedIndex)
 					})()"
 				>
 					<option>Chapter 1</option>
 				</select>
 				<button 
 					class="modal__nav-button"
-					onclick="(() => { setChapter(currentChapter + 1) })()"
+					onclick="(() => {
+						setChapter(currentBook.id, currentChapter + 1)
+					})()"
 					id="next"
 				>&gt;</button>
 			</nav>
@@ -312,7 +327,7 @@ input[type="checkbox"] {
 				<li>
 					<label>
 						<input type="checkbox" value="tao-te-ching" />
-						Medidations
+						Meditations
 					</label>
 				</li>
 			</ul>
@@ -320,86 +335,6 @@ input[type="checkbox"] {
 	</dialog>
 </body>
 
-<script async="true">
-const BOOKS_AVAILABLE = {
-	'tao-te-ching': 'Tao Te Ching 道德經',
-	'meditations': 'Meditations'
-	/*
-	'Analects',
-	'On the Shortness of Life',
-	'Letters from a Stoic',
-	'The Prince',
-	'The Republic',
-	'Nicomachean Ethics',
-	'Confessions',
-	'Leviathan',
-	'Critique of Pure Reason',
-	'Groundwork of the Metaphysics of Morals',
-	'Phenomenology of Spirit',
-	'Being and Time',
-	*/
-}
-
-/**
- * Settings in local storage
- */
-const ReadingList = (() => ({
-	get: () => {
-		const localSettings = localStorage.getItem('reading-list')
-		try {
-			return localSettings ? JSON.parse(localSettings) : Object.keys(BOOKS_AVAILABLE)
-		} catch (error) {
-			return Object.keys(BOOKS_AVAILABLE)
-		}
-	},
-
-	/**
-	 * @param list {string[]}
-	 * List of books to be set in local storage
-	 */
-	set: (list) => {
-		localStorage.setItem('reading-list', JSON.stringify(list))
-	}
-}))()
-
-/**
- * @param books {string[]}
- * Books to be displayed in the reading list
- */
-const fetchBooks = async (books) => {
-	const data = await Promise.all(books.map(async (book) => {
-		const response = await fetch(`./books/${book}.json`)
-		if (!response.ok) {
-			throw new Error(`Failed to fetch ${book}`)
-		}
-		const text = await response.text()
-		return JSON.parse(text)
-	}))
-	return data
-}
-
-const update = (book, chapter) => {
-	const $chapterTitle = document.getElementById('chapter-title')
-	$chapterTitle.textContent = `${chapter + 1}`
-
-	const $chapterContent = document.getElementById('chapter-container')
-	$chapterContent.textContent = taoTeChing[chapter]
-}
-
-(async () => {
-	const books = await fetchBooks(ReadingList.get())
-	console.log(books)
-})()
-
-//const todaysChapter = Math.floor(Math.random() * taoTeChing.length)
-
-//const $chapterTitle = document.getElementById('chapter-title')
-//$chapterTitle.textContent = `${todaysChapter + 1}`
-
-//const $chapterContent = document.getElementById('chapter-container')
-
-//$chapterContent.textContent = taoTeChing[todaysChapter]
-
-</script>
+<script async="true" src="./script.js"></script>
 
 </html>
