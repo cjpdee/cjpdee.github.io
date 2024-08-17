@@ -323,6 +323,7 @@ input[type="checkbox"] {
 <script async="true">
 const BOOKS_AVAILABLE = {
 	'tao-te-ching': 'Tao Te Ching 道德經',
+	'meditations': 'Meditations'
 	/*
 	'Analects',
 	'On the Shortness of Life',
@@ -375,6 +376,14 @@ const fetchBooks = async (books) => {
 		return JSON.parse(text)
 	}))
 	return data
+}
+
+const update = (book, chapter) => {
+	const $chapterTitle = document.getElementById('chapter-title')
+	$chapterTitle.textContent = `${chapter + 1}`
+
+	const $chapterContent = document.getElementById('chapter-container')
+	$chapterContent.textContent = taoTeChing[chapter]
 }
 
 (async () => {
