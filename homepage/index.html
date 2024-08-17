@@ -21,14 +21,16 @@
 	list-style: none;
 }
 
+html {
+	background: var(--c-bg);
+}
+
 body {
 	font-size: 16px;
-	background-color: var(--c-bg);
 	color: var(--c-text);
 }
 
 .page {
-	max-width: 640px;
 	width: 100%;
 	padding: 24px;
 	margin: 0 auto;
@@ -122,7 +124,7 @@ button#nav-toggle:hover, button#nav-toggle.is-active {
 	color: var(--c-text-faded);
 	font-size: 2rem;
 	padding: 8px;
-	padding-bottom: 16px;
+	padding-bottom: 12px;
 	line-height: 0;
 	cursor: pointer;
 }
@@ -232,6 +234,10 @@ input[type="checkbox"] {
 }
 
 @media (min-width: 600px) {
+	html {
+		min-height: 100vh;
+		background: linear-gradient(135deg, var(--c-bg) 30%, #0d0d0d 100%);
+	}
 	body {
 		justify-content: start;
 	}
@@ -259,7 +265,6 @@ input[type="checkbox"] {
 					aria-expanded="false"
 					onclick="document.querySelector('#nav-dialog').showModal()"
 				>
-					Tao Te Ching 道德經
 				</button>
 			</h1>
 		</header>
@@ -276,18 +281,13 @@ input[type="checkbox"] {
 					id="book-select"
 					onchange="(() => {
 						setBook(event.target.value)
-					console.log('here')
 					})()"
 					style="width: calc(100% + 24px); margin-left: -12px;"
 				>
-					<option>Tao Te Ching 道德經</option>
+					<option></option>
 				</select>
-				<address id="author" rel="author" style="line-height: 1.5;">
-					Laozi 老子
-				</address>
-				<address id="translation" rel="author">
-					Translated by Gia-Fu Feng 馮家福 and Jane English
-				</address>
+				<address id="author" rel="author" style="line-height: 1.5;"></address>
+				<address id="translation" rel="author"></address>
 				</span>
 				<address rel="author"></cite>
 			</header>
@@ -298,11 +298,12 @@ input[type="checkbox"] {
 						setChapter(currentBook.id, currentChapter - 1)
 					})()"
 					id="prev"
-				>&lt;</button>
+				>&#x25C0;</button>
 				<select
 					id="chapter-select"
 					onchange="(() => {
 						setChapter(currentBook.id, event.target.selectedIndex)
+						document.querySelector('#nav-dialog').close()
 					})()"
 				>
 					<option>Chapter 1</option>
@@ -313,7 +314,7 @@ input[type="checkbox"] {
 						setChapter(currentBook.id, currentChapter + 1)
 					})()"
 					id="next"
-				>&gt;</button>
+				>&#x25B6;</button>
 			</nav>
 			<hr />
 			<h4>Reading list</h4>
