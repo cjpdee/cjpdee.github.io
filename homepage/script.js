@@ -164,7 +164,7 @@ const setChapter = (bookId, chapter) => {
 
 	const $bookSelect = document.getElementById('book-select')
 	console.log(currentBook)
-	$bookSelect.innerHTML = Object.keys(BOOKS_AVAILABLE).map((bookId, i) => `
+	$bookSelect.innerHTML = ReadingList.get().map((bookId, i) => `
 		<option value="${bookId}" ${currentBook.id === bookId ? 'selected' : ''}>${BOOKS_AVAILABLE[bookId]}</option>
 	`).join('')
 
