@@ -136,7 +136,7 @@ const ReadingList = (() => ({
  * Books to be displayed in the reading list
  */
 const fetchBooks = async (books) => {
-	return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
+	// return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
 	const data = await Promise.all(books.map(async (book) => {
 		console.log('heeeere',`./books/${book.id}|${book.translation_id}.json`)
 		console.log('fetching', book)
