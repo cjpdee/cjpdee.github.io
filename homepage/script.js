@@ -156,7 +156,7 @@ const fetchBooks = async (books) => {
 		console.log('fetching', book)
 		const response = await fetch(`./books/${book.id}|${book.translation_id}.json`)
 		if (!response.ok) {
-			throw new Error(`Failed to fetch ${book}`)
+			throw new Error(`Failed to fetch ${book.id}|${book.translation_id}.json: ${response.status} ${response.statusText}`)
 		}
 		const text = await response.text()
 		console.log('fetched', book)
