@@ -46,7 +46,11 @@ body {
 
 .page__chapter-title {
 	text-align: left;
-	font-size: 2rem;
+	font-size: 2rem !important;
+	padding: 8px !important;
+	margin-top: -8px;
+	margin-left: -8px;
+	margin-bottom: -8px;
 	color: var(--c-text-faded);
 	margin-bottom: 8px;
 	font-weight: 200;
@@ -77,14 +81,14 @@ button#nav-toggle:hover, button#nav-toggle.is-active {
 }
 
 .modal {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	align-items: center;
 	justify-content: center;
 	max-width: none;
 	width: 100vw;
-	height: 100vh;
+	min-height: 100vh;
 	padding: 24px;
 	background: rgba(0, 0, 0, 0.5);
 	pointer-events: none;
@@ -112,7 +116,7 @@ button#nav-toggle:hover, button#nav-toggle.is-active {
 	width: 100%;
 }
 
-.modal__nav-button {
+.nav-button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -129,9 +133,34 @@ button#nav-toggle:hover, button#nav-toggle.is-active {
 	cursor: pointer;
 }
 
-.modal__nav-button:hover {
+.nav-button:hover {
 	color: var(--c-text);
 	background: var(--c-bg-faded);
+}
+
+.nav-button--main {
+	@media (max-width: 600px) {
+		position: fixed;
+		top: 80px;
+		bottom: 0;
+		height: calc(100vh - 80px);
+		width: 48px;
+		opacity: 0;
+		&:hover {
+			background: transparent;
+		}
+		&:active {
+			background: rgba(0, 0, 0, 0.5);
+			opacity: 0.5;
+		}
+
+		&#prev {
+			left: 0;
+		}
+		&#next {
+			right: 0;
+		}
+	}
 }
 
 & select {
@@ -178,7 +207,6 @@ label {
 	gap: 8px;
 	width: 100%;
 	padding: 8px;
-	padding-left: 0;
 	border-radius: 4px;
 	background: var(--c-bg);
 	color: var(--c-text-faded);
@@ -191,7 +219,6 @@ label {
 		color: var(--c-text);
 	}
 	@media (min-width: 600px) {
-		padding-left: 8px;
 		&:hover {
 			background: var(--c-bg-faded);
 			color: var(--c-text);
@@ -232,6 +259,7 @@ input[type="checkbox"] {
 }
 
 .page__chapter-content {
+	max-width: 640px;
 	width: 100%;
 	white-space: pre-wrap;
 	font-size: 1rem;
@@ -263,7 +291,15 @@ input[type="checkbox"] {
 <body>
 	<main class="page">
 		<header class="page__header">
-			<h2 id="chapter-title" class="page__chapter-title"></h2>
+
+			<select  class="page__chapter-title"
+				 id="chapter-select"
+				 onchange="(() => {
+				 setChapter(currentBook.id, currentBook.translation_id, event.target.selectedIndex)
+				 })()"
+				 >
+			</select>
+
 			<h1 class="page__book-title">
 				<button 
 					id="nav-toggle"
@@ -276,6 +312,22 @@ input[type="checkbox"] {
 			</h1>
 		</header>
 		<p class="page__chapter-content" id="chapter-container"></p>
+		<nav style="position: fixed; right: 24px; bottom: 24px; display: flex; align-items: center; justify-content: end; gap: 8px;">
+			<button 
+				class="nav-button nav-button--main"
+				onclick="(() => { 
+					setChapter(currentBook.id, currentBook.translation_id, currentChapter - 1)
+				})()"
+				id="prev"
+			>&#x25C0;</button>
+			<button 
+				class="nav-button nav-button--main"
+				onclick="(() => {
+					setChapter(currentBook.id, currentBook.translation_id, currentChapter + 1)
+				})()"
+				id="next"
+			>&#x25B6;</button>
+		</nav>
 	</main>
 	<dialog id="nav-dialog" class="modal" onclick="(() => {
 		if ((event.target.contains(document.querySelector('#nav-dialog')))) {
@@ -313,7 +365,7 @@ input[type="checkbox"] {
 			</header>
 			<nav class="modal__nav">
 				<button 
-					class="modal__nav-button"
+					class="nav-button"
 					onclick="(() => { 
 						setChapter(currentBook.id, currentBook.translation_id, currentChapter - 1)
 					})()"
@@ -329,7 +381,7 @@ input[type="checkbox"] {
 					<option>Chapter 1</option>
 				</select>
 				<button 
-					class="modal__nav-button"
+					class="nav-button"
 					onclick="(() => {
 						setChapter(currentBook.id, currentBook.translation_id, currentChapter + 1)
 					})()"

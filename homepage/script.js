@@ -33,11 +33,11 @@ const TEST_BOOKS = [
 `,
 `
 {
-    "id": "meditations",
-    "translation_id": "steve",
+    "id": "meditations-book-1",
+    "translation_id": "gregory-hays",
     "title": "Meditations",
     "author": "Marcus Aurelius",
-    "translated_by": "Fuck knows yet",
+    "translated_by": "Gregory Hays",
     "chapters": [
         "yo dawg this is marcus aurelius",
         "life shouldnt be easy and shit man",
@@ -46,20 +46,6 @@ const TEST_BOOKS = [
 }
 
 `,
-`
-{
-    "id": "art-of-war",
-    "title": "Art of War",
-    "author": "sun zoo",
-    "translated_by": "Sun zoo knows yet",
-    "chapters": [
-        "fight them off",
-        "patience adn that",
-        "kill"
-    ]
-}
-
-`
 ]
 
 /*
@@ -150,7 +136,7 @@ const ReadingList = (() => ({
  * Books to be displayed in the reading list
  */
 const fetchBooks = async (books) => {
-	// return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
+	return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
 	const data = await Promise.all(books.map(async (book) => {
 		console.log('heeeere',`./books/${book.id}|${book.translation_id}.json`)
 		console.log('fetching', book)
@@ -226,8 +212,8 @@ const setChapter = (bookId, translationId, chapter) => {
 	const chapter = currentChapter
 	console.log(currentBook)
 
-	const $chapterTitle = document.getElementById('chapter-title')
-	$chapterTitle.textContent = `${chapter + 1}`
+	// const $chapterTitle = document.getElementById('chapter-title')
+	// $chapterTitle.textContent = `${chapter + 1}`
 
 	const $chapterContent = document.getElementById('chapter-container')
 	$chapterContent.textContent = book.chapters[chapter]
@@ -239,7 +225,7 @@ const setChapter = (bookId, translationId, chapter) => {
 	console.log(currentBook)
 
 	// group by ids
-	const groupedBooks = groupBy(ReadingList.get(), (book) => BOOKS_AVAILABLE.find(_book => _book.id === book.id).id)
+	const groupedBooks = groupBy(ReadingList.get(), (book) => BOOKS_AVAILABLE.find((_book) => _book.id === book.id)?.id)
 	console.log('groupedBooks', groupedBooks)
 
 	
@@ -261,10 +247,12 @@ const setChapter = (bookId, translationId, chapter) => {
 		`
 	}).join('')
 
-	const $chapterSelect = document.getElementById('chapter-select')
-	$chapterSelect.innerHTML = book.chapters.map((_, i) => `
-		<option value="${i}" ${i === chapter ? 'selected' : ''}>Chapter ${i + 1}</option>
-	`).join('')
+	const $chapterSelects = [...document.querySelectorAll('#chapter-select')]
+	$chapterSelects.forEach(($chapterSelect) => {
+		$chapterSelect.innerHTML = book.chapters.map((_, i) => `
+			<option value="${i}" ${i === chapter ? 'selected' : ''}>${i + 1}</option>
+		`).join('')
+	})
 
 	const $author = document.getElementById('author')
 	$author.textContent = book.author
