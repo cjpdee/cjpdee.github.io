@@ -3,7 +3,7 @@
 const TEST_BOOKS = [
 `
 {
-    "book_id": "tao-te-ching",
+    "id": "tao-te-ching",
     "translation_id": "gia-fu-feng-jane-english",
     "title": "tao te ching",
     "author": "Lao Tzu",
@@ -18,23 +18,23 @@ const TEST_BOOKS = [
 `,
 `
 {
-    "book_id": "tao-te-ching",
-    "translation_id": "some-else",
+    "id": "tao-te-ching",
+    "translation_id": "someone-else",
     "title": "tao te ching",
     "author": "Lao Tzu",
     "translated_by": "someone else",
     "chapters": [
-        "yo dawg this is marcus aurelius",
-        "life shouldnt be easy and shit man",
-        "get your shit together"
+        "eeby deeby dooby gooby",
+        "speepy poopy deepy doopy",
+        "meepy moopy stroopy toopy"
     ]
 }
 
 `,
 `
 {
-    "book_id": "meditations",
-    "translation_id": "fuck-knows-yet",
+    "id": "meditations",
+    "translation_id": "steve",
     "title": "Meditations",
     "author": "Marcus Aurelius",
     "translated_by": "Fuck knows yet",
@@ -62,21 +62,32 @@ const TEST_BOOKS = [
 `
 ]
 
+/*
+ *
+ */
+/**
+ * @typedef Book
+ * @type {Object}
+ * @property {string} id
+ * @property {string} translation_id
+ * @property {string} title
+ * @property {string} translated_by
+ */
 const BOOKS_AVAILABLE = [
 	{
-		book_id: 'tao-te-ching',
+		id: 'tao-te-ching',
 		translation_id: 'gia-fu-feng-jane-english',
 		title: 'Tao Te Ching 道德經',
 		translated_by: 'Gia-Fu Feng & Jane English',
 	},
 	{
-		book_id: 'tao-te-ching',
+		id: 'tao-te-ching',
 		translation_id: 'someone-else',
 		title: 'Tao Te Ching 道德經',
 		translated_by: 'Someone Else',
 	},
 	{
-		book_id: 'meditations',
+		id: 'meditations',
 		translation_id: 'steve',
 		title: 'Meditations',
 		translated_by: 'Steve',
@@ -118,6 +129,7 @@ const ReadingList = (() => ({
 			return BOOKS_AVAILABLE
 		}
 		try {
+			const parsed = localSettings ? JSON.parse(localSettings) : []
 			return localSettings ? JSON.parse(localSettings) : BOOKS_AVAILABLE
 		} catch (error) {
 			return BOOKS_AVAILABLE
@@ -134,15 +146,15 @@ const ReadingList = (() => ({
 }))()
 
 /**
- * @param books {string[]}
+ * @param books {Book[]}
  * Books to be displayed in the reading list
  */
 const fetchBooks = async (books) => {
-	console.log('fetching', books, TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id)))
-	return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
+	// return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
 	const data = await Promise.all(books.map(async (book) => {
+		console.log('heeeere',`./books/${book.id}|${book.translation_id}.json`)
 		console.log('fetching', book)
-		const response = await fetch(`./books/${book}.json`)
+		const response = await fetch(`./books/${book.id}|${book.translation_id}.json`)
 		if (!response.ok) {
 			throw new Error(`Failed to fetch ${book}`)
 		}
@@ -163,15 +175,17 @@ const getRandom = (arr) => {
 
 /**
  * @param bookId {string}
+ * @param translationId {string}
  * @returns {Object}
  */
-const getBook = (bookId) => books.find((b) => b.book_id === bookId)
+const getBook = (bookId, translationId) => books.find((b) => b.id === bookId) && books.find((b) => b.translation_id === translationId)
 
 /**
  * @param bookId {string}
+ * @param translationId {string}
  */
-const setBook = (bookId) => {
-	const book = getBook(bookId)
+const setBook = (bookId, translationId) => {
+	const book = getBook(bookId, translationId)
 	console.log('books', books, book)
 	if (!book) {
 		throw new Error(`Book ${bookId} not found`)
@@ -179,19 +193,21 @@ const setBook = (bookId) => {
 
 	currentBook = book
 	currentChapter = getRandom(book.chapters)
+	console.log('current', currentBook, currentChapter)
 
 	update()
 }
 
 /**
  * @param bookId {string}
+ * @param translationId {string}
  * @param chapter {number}
  */
-const setChapter = (bookId, chapter) => {
-	const book = getBook(bookId)
+const setChapter = (bookId, translationId, chapter) => {
+	const book = getBook(bookId, translationId)
 	console.log('books', books, book)
 	if (!book) {
-		throw new Error(`Book ${bookId} not found`)
+		throw new Error(`Book ${bookId} translated by ${translationId} not found`)
 	}
 
 	if (chapter >= 0 && chapter < book.chapters.length) {
@@ -222,26 +238,25 @@ const setChapter = (bookId, chapter) => {
 	const $bookSelect = document.getElementById('book-select')
 	console.log(currentBook)
 
-
-	// reduce books into groups, grouped by translations
-	
-	const groupedBooks = groupBy(ReadingList.get(), (book) => BOOKS_AVAILABLE.find(_book => _book.id === book.id))
+	// group by ids
+	const groupedBooks = groupBy(ReadingList.get(), (book) => BOOKS_AVAILABLE.find(_book => _book.id === book.id).id)
 	console.log('groupedBooks', groupedBooks)
 
 	
-	const uniqueBooks = new Set(ReadingList.get().map((book) => book.book_id))
+	const uniqueBooks = new Set(ReadingList.get().map((book) => book.id))
 	console.log('uniqueBooks', uniqueBooks)
 	
 	$bookSelect.innerHTML = [...uniqueBooks].map((bookId, i) => {
-		console.log('bewk', bookId,BOOKS_AVAILABLE.find(_book => _book.book_id === bookId));
+		console.log('bewk', bookId,BOOKS_AVAILABLE.find(_book => _book.id === bookId));
 		console.log('ccurentbook', currentBook)
-		if (!BOOKS_AVAILABLE.find(_book => _book.book_id === bookId)) return;
+		if (!BOOKS_AVAILABLE.find(_book => _book.id === bookId)) return;
 		return`
 		<option 
 			value="${bookId}" 
-			${currentBook.book_id === bookId ? 'selected' : ''}
+			data-translation="${BOOKS_AVAILABLE.find(_book => _book.id === bookId)?.translation_id}"
+			${currentBook.id === bookId ? 'selected' : ''}
 		>
-			${BOOKS_AVAILABLE.find(_book => _book.book_id === bookId)?.title}
+			${BOOKS_AVAILABLE.find(_book => _book.id === bookId)?.title}
 		</option>
 		`
 	}).join('')
@@ -255,23 +270,36 @@ const setChapter = (bookId, chapter) => {
 	$author.textContent = book.author
 
 	const $translationSelect = document.getElementById('translation-select')
-	$translationSelect.innerHTML = Object.values(groupedBooks).filter(book => book.title === currentBook.title).map((book) => {
-		if (!BOOKS_AVAILABLE.find(_book => _book.book_id === book.id)) return;
+
+	console.log('translation selecta', groupedBooks[currentBook.id],Object.values(groupedBooks)[currentBook.id])
+	$translationSelect.innerHTML = groupedBooks[currentBook.id].map((book) => {
 		return `
-		<option value="${book.id}" ${currentBook.id === book.id ? 'selected' : ''}>
-			${BOOKS_AVAILABLE.find(_book => _book.id === book.id)?.translated_by}
+		<option value="${book.translation_id}" ${currentBook.translation_id === book.translation_id ? 'selected' : ''}>
+			Translated by ${book.translated_by}
 		</option>
 		`
+	
 	})
 
 	const $readingList = document.getElementById('reading-list')
 	$readingList.innerHTML = BOOKS_AVAILABLE.map((book) => `
 		<li>
 			<label>
-				<input type="checkbox" ${ReadingList.get().find(_book => _book.book_id === book.id) ? 'checked' : ''} 
+				<input type="checkbox" ${ReadingList.get().find(_book => _book.id === book.id && _book.translation_id === book.translation_id) ? 'checked' : ''} 
 					onchange="(() => {
-						const addBook = () => [...ReadingList.get(), '${book.book_id}']
-						const removeBook = () => ReadingList.get().filter((b) => b !== '${book.book_id}')
+						const addBook = () => [
+							...ReadingList.get(),
+							BOOKS_AVAILABLE.find(b =>
+								b.id === '${book.id}'
+								&& b.translation_id === '${book.translation_id}'
+							)
+						]
+						const removeBook = () =>
+							ReadingList.get()
+								.filter((b) =>
+									b.id !== '${book.id}' 
+									|| b.translation_id !== '${book.translation_id}'
+								)
 						if (this.checked) {
 							ReadingList.set(addBook())
 						} else {

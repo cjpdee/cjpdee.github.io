@@ -287,14 +287,27 @@ input[type="checkbox"] {
 				<select 
 					id="book-select"
 					onchange="(() => {
-						setBook(event.target.value)
+						setBook(event.target.value, BOOKS_AVAILABLE.find(book => book.id === event.target.value).translation_id)
 					})()"
-					style="width: calc(100% + 24px); margin-left: -12px;"
+					style="width: calc(100% + 24px); margin-left: -12px; margin-bottom: 0.25rem;"
 				>
 					<option></option>
 				</select>
-				<address id="author" rel="author" style="line-height: 1.5;"></address>
-				<select id="translation-select"></select>
+				<address id="author" rel="author" style="line-height: 1.5; position: relative; z-index: 1; pointer-events: none;"></address>
+				<select 
+					id="translation-select"
+					onchange="(() => {
+						setBook(currentBook.id, event.target.value)
+					})()"
+					style="
+						width: calc(100% + 24px);
+						margin-left: -12px;
+						font-size: 1rem;
+						margin-top: -2rem;
+						padding-top: 1.5rem;
+						padding-bottom: 0.25rem;
+					"
+				></select>
 				</span>
 				<address rel="author"></cite>
 			</header>
@@ -302,14 +315,14 @@ input[type="checkbox"] {
 				<button 
 					class="modal__nav-button"
 					onclick="(() => { 
-						setChapter(currentBook.id, currentChapter - 1)
+						setChapter(currentBook.id, currentBook.translation_id, currentChapter - 1)
 					})()"
 					id="prev"
 				>&#x25C0;</button>
 				<select
 					id="chapter-select"
 					onchange="(() => {
-						setChapter(currentBook.id, event.target.selectedIndex)
+						setChapter(currentBook.id, currentBook.translation_id, event.target.selectedIndex)
 						document.querySelector('#nav-dialog').close()
 					})()"
 				>
@@ -318,7 +331,7 @@ input[type="checkbox"] {
 				<button 
 					class="modal__nav-button"
 					onclick="(() => {
-						setChapter(currentBook.id, currentChapter + 1)
+						setChapter(currentBook.id, currentBook.translation_id, currentChapter + 1)
 					})()"
 					id="next"
 				>&#x25B6;</button>
