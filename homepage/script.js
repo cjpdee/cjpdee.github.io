@@ -3,7 +3,38 @@
 const TEST_BOOKS = [
 `
 {
-    "id": "meditations",
+    "book_id": "tao-te-ching",
+    "translation_id": "gia-fu-feng-jane-english",
+    "title": "tao te ching",
+    "author": "Lao Tzu",
+    "translated_by": "Gia-Fu Feng & Jane English",
+    "chapters": [
+        "yo dawg this is marcus aurelius",
+        "life shouldnt be easy and shit man",
+        "get your shit together"
+    ]
+}
+
+`,
+`
+{
+    "book_id": "tao-te-ching",
+    "translation_id": "some-else",
+    "title": "tao te ching",
+    "author": "Lao Tzu",
+    "translated_by": "someone else",
+    "chapters": [
+        "yo dawg this is marcus aurelius",
+        "life shouldnt be easy and shit man",
+        "get your shit together"
+    ]
+}
+
+`,
+`
+{
+    "book_id": "meditations",
+    "translation_id": "fuck-knows-yet",
     "title": "Meditations",
     "author": "Marcus Aurelius",
     "translated_by": "Fuck knows yet",
@@ -30,31 +61,52 @@ const TEST_BOOKS = [
 
 `
 ]
-const BOOKS_AVAILABLE = {
-	'tao-te-ching': 'Tao Te Ching 道德經',
-	'meditations-book-1': 'Meditations: Book 1',
-	'meditations-book-2': 'Meditations: Book 2',
-	'meditations-book-3': 'Meditations: Book 3',
-	'meditations-book-4': 'Meditations: Book 4',
-	'meditations-book-5': 'Meditations: Book 5',
-	'meditations-book-6': 'Meditations: Book 6',
-	// 'meditations-book-7': 'Meditations: Book 7',
-	'art-of-war': 'Art of War'
-	/*
-	'Analects',
-	'On the Shortness of Life',
-	'Letters from a Stoic',
-	'The Prince',
-	'The Republic',
-	'Nicomachean Ethics',
-	'Confessions',
-	'Leviathan',
-	'Critique of Pure Reason',
-	'Groundwork of the Metaphysics of Morals',
-	'Phenomenology of Spirit',
-	'Being and Time',
-	*/
-}
+
+const BOOKS_AVAILABLE = [
+	{
+		book_id: 'tao-te-ching',
+		translation_id: 'gia-fu-feng-jane-english',
+		title: 'Tao Te Ching 道德經',
+		translated_by: 'Gia-Fu Feng & Jane English',
+	},
+	{
+		book_id: 'tao-te-ching',
+		translation_id: 'someone-else',
+		title: 'Tao Te Ching 道德經',
+		translated_by: 'Someone Else',
+	},
+	{
+		book_id: 'meditations',
+		translation_id: 'steve',
+		title: 'Meditations',
+		translated_by: 'Steve',
+	},
+]
+
+/*
+ * @param arr {any[]} The array to group items from
+ * @param criteria {string | () => boolean} The criteria to group by
+ * @return {Object} The grouped object
+ */
+var groupBy = function (arr, criteria) {
+	return arr.reduce(function (obj, item) {
+
+		// Check if the criteria is a function to run on the item or a property of it
+		var key = typeof criteria === 'function' ? criteria(item) : item[criteria];
+
+		// If the key doesn't exist yet, create it
+		if (!obj.hasOwnProperty(key)) {
+			obj[key] = [];
+		}
+
+		// Push the value to the object
+		obj[key].push(item);
+
+		// Return the object to the next item in the loop
+		return obj;
+
+	}, {});
+};
 
 /**
  * Settings in local storage
@@ -62,10 +114,13 @@ const BOOKS_AVAILABLE = {
 const ReadingList = (() => ({
 	get: () => {
 		const localSettings = localStorage.getItem('reading-list')
+		if (Array.isArray(localSettings) && localSettings.length === 0) {
+			return BOOKS_AVAILABLE
+		}
 		try {
-			return localSettings ? JSON.parse(localSettings) : Object.keys(BOOKS_AVAILABLE)
+			return localSettings ? JSON.parse(localSettings) : BOOKS_AVAILABLE
 		} catch (error) {
-			return Object.keys(BOOKS_AVAILABLE)
+			return BOOKS_AVAILABLE
 		}
 	},
 
@@ -83,7 +138,8 @@ const ReadingList = (() => ({
  * Books to be displayed in the reading list
  */
 const fetchBooks = async (books) => {
-	// return TEST_BOOKS.map((book) => JSON.parse(book)).filter((book) => ReadingList.get().includes(book.id));
+	console.log('fetching', books, TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id)))
+	return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
 	const data = await Promise.all(books.map(async (book) => {
 		console.log('fetching', book)
 		const response = await fetch(`./books/${book}.json`)
@@ -109,7 +165,7 @@ const getRandom = (arr) => {
  * @param bookId {string}
  * @returns {Object}
  */
-const getBook = (bookId) => books.find((b) => b.id === bookId)
+const getBook = (bookId) => books.find((b) => b.book_id === bookId)
 
 /**
  * @param bookId {string}
@@ -133,6 +189,7 @@ const setBook = (bookId) => {
  */
 const setChapter = (bookId, chapter) => {
 	const book = getBook(bookId)
+	console.log('books', books, book)
 	if (!book) {
 		throw new Error(`Book ${bookId} not found`)
 	}
@@ -164,9 +221,30 @@ const setChapter = (bookId, chapter) => {
 
 	const $bookSelect = document.getElementById('book-select')
 	console.log(currentBook)
-	$bookSelect.innerHTML = ReadingList.get().map((bookId, i) => `
-		<option value="${bookId}" ${currentBook.id === bookId ? 'selected' : ''}>${BOOKS_AVAILABLE[bookId]}</option>
-	`).join('')
+
+
+	// reduce books into groups, grouped by translations
+	
+	const groupedBooks = groupBy(ReadingList.get(), (book) => BOOKS_AVAILABLE.find(_book => _book.id === book.id))
+	console.log('groupedBooks', groupedBooks)
+
+	
+	const uniqueBooks = new Set(ReadingList.get().map((book) => book.book_id))
+	console.log('uniqueBooks', uniqueBooks)
+	
+	$bookSelect.innerHTML = [...uniqueBooks].map((bookId, i) => {
+		console.log('bewk', bookId,BOOKS_AVAILABLE.find(_book => _book.book_id === bookId));
+		console.log('ccurentbook', currentBook)
+		if (!BOOKS_AVAILABLE.find(_book => _book.book_id === bookId)) return;
+		return`
+		<option 
+			value="${bookId}" 
+			${currentBook.book_id === bookId ? 'selected' : ''}
+		>
+			${BOOKS_AVAILABLE.find(_book => _book.book_id === bookId)?.title}
+		</option>
+		`
+	}).join('')
 
 	const $chapterSelect = document.getElementById('chapter-select')
 	$chapterSelect.innerHTML = book.chapters.map((_, i) => `
@@ -176,19 +254,32 @@ const setChapter = (bookId, chapter) => {
 	const $author = document.getElementById('author')
 	$author.textContent = book.author
 
-	const $translation = document.getElementById('translation')
-	$translation.textContent = `Translated by ${book.translated_by}`
+	const $translationSelect = document.getElementById('translation-select')
+	$translationSelect.innerHTML = Object.values(groupedBooks).filter(book => book.title === currentBook.title).map((book) => {
+		if (!BOOKS_AVAILABLE.find(_book => _book.book_id === book.id)) return;
+		return `
+		<option value="${book.id}" ${currentBook.id === book.id ? 'selected' : ''}>
+			${BOOKS_AVAILABLE.find(_book => _book.id === book.id)?.translated_by}
+		</option>
+		`
+	})
 
 	const $readingList = document.getElementById('reading-list')
-	$readingList.innerHTML = Object.keys(BOOKS_AVAILABLE).map((bookId) => `
+	$readingList.innerHTML = BOOKS_AVAILABLE.map((book) => `
 		<li>
 			<label>
-				<input 
-					type="checkbox" 
-					${ReadingList.get().includes(bookId) ? 'checked' : ''} 
-					onchange="ReadingList.set(this.checked ? [...ReadingList.get(), '${bookId}'] : ReadingList.get().filter((b) => b !== '${bookId}'))"
+				<input type="checkbox" ${ReadingList.get().find(_book => _book.book_id === book.id) ? 'checked' : ''} 
+					onchange="(() => {
+						const addBook = () => [...ReadingList.get(), '${book.book_id}']
+						const removeBook = () => ReadingList.get().filter((b) => b !== '${book.book_id}')
+						if (this.checked) {
+							ReadingList.set(addBook())
+						} else {
+							ReadingList.set(removeBook())
+						}
+					})()"
 				/>
-				${BOOKS_AVAILABLE[bookId]}
+				${book.title}
 			</label>
 		</li>
 	`).join('')
@@ -200,6 +291,10 @@ let currentChapter;
 (async () => {
 	books = await fetchBooks(ReadingList.get())
 	currentBook = books[getRandom(books)];
+	console.log('current', currentBook, books)
+	if (!currentBook) {
+		throw new Error('No books found')
+	}
 	currentChapter = getRandom(currentBook.chapters);
 	update()
 })()
