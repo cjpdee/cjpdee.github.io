@@ -88,7 +88,7 @@ const BOOKS_AVAILABLE = [
 	},
 	{
 		id: 'meditations-book-1',
-		translation_id: 'gregory_hays',
+		translation_id: 'gregory-hays',
 		title: 'Meditations',
 		translated_by: 'Gregory Hays',
 	},
