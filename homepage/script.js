@@ -154,9 +154,9 @@ const fetchBooks = async (books) => {
 	const data = await Promise.all(books.map(async (book) => {
 		console.log('heeeere',`./books/${book.id}|${book.translation_id}.json`)
 		console.log('fetching', book)
-		const response = await fetch(`./books/${book.id}|${book.translation_id}.json`)
+		const response = await fetch(`./books/${book.id}_${book.translation_id}.json`)
 		if (!response.ok) {
-			throw new Error(`Failed to fetch ${book.id}|${book.translation_id}.json: ${response.status} ${response.statusText}`)
+			throw new Error(`Failed to fetch ${book.id}_${book.translation_id}.json: ${response.status} ${response.statusText}`)
 		}
 		const text = await response.text()
 		console.log('fetched', book)
