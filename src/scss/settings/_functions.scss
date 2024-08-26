@@ -1,4 +1,0 @@
-// ems
-@function em($pixels, $font-size: $fzBase) {
-    @return #{$pixels/$font-size}em;
-}

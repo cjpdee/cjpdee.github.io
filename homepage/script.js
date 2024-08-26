@@ -1,22 +1,6 @@
 
 // @ts-check
 const TEST_BOOKS = [
-`
-{
-    "id": "tao-te-ching",
-    "translation_id": "gia-fu-feng-jane-english",
-    "title": "tao te ching",
-    "author": "Lao Tzu",
-    "translated_by": "Gia-Fu Feng & Jane English",
-    "chapters": [
-        "yo dawg this is marcus aurelius",
-        "life shouldnt be easy and shit man",
-        "get your shit together"
-    ]
-}
-
-`,
-`
 {
     "id": "tao-te-ching",
     "translation_id": "someone-else",
@@ -29,18 +13,18 @@ const TEST_BOOKS = [
 		"content": "eeby deeby dooby gooby"
 	},
 	{
-		"chapter": "1.0",
+		"chapter": "2.0",
 		"content": "speepy poopy deepy doopy"
 	},
 	{
-		"chapter": "1.0",
+		"chapter": "3.0",
 		"content": "meepy moopy stroopy toopy"
 	}
     ]
 }
 
-`,
-`
+,
+
 {
     "id": "meditations-book-2",
     "translation_id": "gregory-hays",
@@ -135,7 +119,7 @@ const TEST_BOOKS = [
 
     ]
 }
-`,
+,
 ]
 
 /**
@@ -159,14 +143,8 @@ const BOOKS_AVAILABLE = [
 		title: 'Tao Te Ching 道德經',
 		translated_by: 'Someone Else',
 	},
-	// {
-	// 	id: 'meditations-book-1',
-	// 	translation_id: 'gregory-hays',
-	// 	title: 'Meditations',
-	// 	translated_by: 'Gregory Hays',
-	// },
 	{
-		id: 'meditations-book-2',
+		id: 'meditations',
 		translation_id: 'gregory-hays',
 		title: 'Meditations',
 		translated_by: 'Gregory Hays',
@@ -229,7 +207,11 @@ const ReadingList = (() => ({
  * Books to be displayed in the reading list
  */
 const fetchBooks = async (books) => {
-	// return TEST_BOOKS.map((book) => JSON.parse(book)).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
+	// return TEST_BOOKS.map((book) => {
+	// 	console.log('book', book)
+	// 	return book
+	// 	return JSON.parse(book)
+	// }).filter((_book) => ReadingList.get().find(__book => __book.id === _book.id));
 	const data = await Promise.all(books.map(async (book) => {
 		console.log('heeeere',`./books/${book.id}|${book.translation_id}.json`)
 		console.log('fetching', book)
@@ -347,8 +329,9 @@ const setChapter = (bookId, translationId, chapter) => {
 
 	const $chapterSelects = [...document.querySelectorAll('#chapter-select')]
 	$chapterSelects.forEach(($chapterSelect) => {
-		$chapterSelect.innerHTML = book.chapters.map((_, i) => `
-			<option value="${_.chapter}" ${_.chapter === chapter ? 'selected' : ''}>${_.chapter}</option>
+		console.log('chapterrr', chapter)
+		$chapterSelect.innerHTML = book.chapters.map((_chapter, i) => `
+			<option value="${_chapter.chapter}" ${i === chapter ? 'selected' : ''}>${_chapter.chapter}</option>
 		`).join('')
 	})
 

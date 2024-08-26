@@ -5,9 +5,21 @@
     "author": "Laozi 老子",
     "translated_by": "Gia-Fu Feng 馮家福 and Jane English",
     "chapters": [
-        "meeeeeeep",
-        "deeeppyyyy",
-        "ddfhjdhskjfdsklfjdskl",
-        "fdhsjfkldsjflkdsjklfsdj"
+	{
+	    "chapter": "1",
+	    "content": "meeeeeeep"
+	},
+	{
+	    "chapter": "2",
+	    "content": "deeeppyyyy"
+	},
+	{
+	    "chapter": "3",
+	    "content": "ddfhjdhskjfdsklfjdskl"
+	},
+	{
+	    "chapter": "4",
+	    "content": "fdhsjfkldsjflkdsjklfsdj"
+	}
     ]
 }
